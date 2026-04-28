@@ -1,0 +1,110 @@
+.credit {
+  position: relative;
+  flex-shrink: 0;
+  z-index: 20;
+
+  &__panel {
+    position: absolute;
+    bottom: var(--credits-bar-height);
+    left: 0;
+    right: 0;
+    background: var(--color-bg);
+    border-top: 0.5px solid var(--color-border);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height var(--transition), background var(--transition);
+
+    &--open {
+      max-height: 220px;
+    }
+  }
+
+  &__panel-inner {
+    padding: 20px 24px;
+  }
+
+  &__panel-title {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 14px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  &__card {
+    background: var(--color-bg-soft);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+  }
+
+  &__card-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 2px;
+  }
+
+  &__card-role {
+    font-size: 11px;
+    color: var(--color-muted);
+  }
+
+  &__card-link {
+    font-size: 11px;
+    color: var(--color-muted);
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 4px;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+
+  &__bar {
+    height: var(--credits-bar-height);
+    background: var(--color-bg);
+    border-top: 0.5px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background var(--transition), border-color var(--transition);
+
+    &:hover .credit__bar-hint {
+      opacity: 1;
+    }
+  }
+
+  &__bar-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--color-muted);
+
+    svg {
+      transition: transform var(--transition);
+    }
+
+    &--open svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__bar-hint {
+    font-size: 11px;
+    color: var(--color-muted);
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+}

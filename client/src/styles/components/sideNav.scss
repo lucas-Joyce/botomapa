@@ -1,11 +1,15 @@
 .sidenav {
+  position: absolute;
+  right: 0;
+  top: var(--nav-height);
+  bottom: 0;
   width: var(--sidenav-collapsed);
   background: var(--color-bg-soft);
   border-left: 0.5px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
   overflow: hidden;
+  z-index: 5;
   transition: width var(--transition), background var(--transition), border-color var(--transition);
 
   &--expanded {

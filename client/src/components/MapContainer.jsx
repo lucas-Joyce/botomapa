@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react'
 import * as d3 from 'd3'
 import '../styles/components/mapContainer.scss'
 
-export default function MapContainer({ children }) {
+export default function MapContainer({ viewMode, mapMode, children }) {
   const svgRef = useRef(null)
   const gRef = useRef(null)
 

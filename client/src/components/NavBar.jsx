@@ -1,14 +1,7 @@
 import { NavLink } from 'react-router-dom'
-import { useTheme } from '../context/ThemeContext'
+import { useTheme } from '../context/theme-context'
+import { countries } from '../config/countries'
 import '../styles/components/navBar.scss'
-
-const countries = [
-  { name: 'United Kingdom', path: '/uk' },
-  { name: 'United States', path: '/usa' },
-  { name: 'France', path: '/france' },
-  { name: 'Germany', path: '/germany' },
-  { name: 'Philippines', path: '/philippines' },
-]
 
 function SunIcon() {
   return (
@@ -35,18 +28,29 @@ function HamburgerIcon() {
   )
 }
 
+// Split disc — signals the colour-vision / palette toggle.
+function PaletteIcon({ active }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5"/>
+      <path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" opacity={active ? 1 : 0.55}/>
+    </svg>
+  )
+}
+
 export default function NavBar() {
-  const { theme, toggleTheme } = useTheme()
+  const { theme, toggleTheme, palette, togglePalette } = useTheme()
+  const colourblind = palette === 'colourblind'
 
   return (
     <nav className="navbar">
       <NavLink to="/" className="navbar__logo">LJ</NavLink>
 
       <ul className="navbar__countries">
-        {countries.map(({ name, path }) => (
-          <li key={path}>
+        {countries.map(({ name, slug }) => (
+          <li key={slug}>
             <NavLink
-              to={path}
+              to={`/${slug}`}
               className={({ isActive }) =>
                 `navbar__link${isActive ? ' navbar__link--active' : ''}`
               }
@@ -58,6 +62,16 @@ export default function NavBar() {
       </ul>
 
       <div className="navbar__actions">
+        <button
+          className={`navbar__icon-btn${colourblind ? ' navbar__icon-btn--on' : ''}`}
+          onClick={togglePalette}
+          aria-pressed={colourblind}
+          aria-label={colourblind ? 'Use standard party colours' : 'Use colourblind-safe colours'}
+          title={colourblind ? 'Colourblind-safe palette (on)' : 'Colourblind-safe palette (off)'}
+        >
+          <PaletteIcon active={colourblind} />
+        </button>
+
         <button
           className="navbar__icon-btn"
           onClick={toggleTheme}

@@ -1,0 +1,15 @@
+{
+  "name": "botomapa",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Multi-country political data visualisation — client + thin static-JSON server.",
+  "scripts": {
+    "dev": "concurrently -n client,server -c blue,green \"npm --prefix client run dev\" \"npm --prefix server run dev\"",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "npm --prefix server run dev",
+    "install:all": "npm install && npm --prefix client install && npm --prefix server install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

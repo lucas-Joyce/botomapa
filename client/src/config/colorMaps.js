@@ -18,7 +18,11 @@ export const partyColors = {
   standard: {
     uk: {
       CON: '#0087DC', LAB: '#E4003B', LD: '#FAA61A', SNP: '#FDF23B',
-      GRN: '#02A95B', RUK: '#12B6CF', PC: '#005B54', DUP: '#D46A4C',
+      GRN: '#02A95B',
+      UKIP: '#70147A',   // purple  (2015, 2017)
+      BREXIT: '#2AB1C4', // teal    (2019)
+      RUK: '#12B6CF',    // cyan    (2024)
+      PC: '#005B54', DUP: '#D46A4C',
       SF: '#326760', SDLP: '#2AA82C', UUP: '#48A5EE', APNI: '#F6CB2F',
       OTH: '#999999',
     },
@@ -45,7 +49,15 @@ export const partyColors = {
   colourblind: {
     uk: {
       CON: '#0072B2', LAB: '#D55E00', LD: '#E69F00', SNP: '#F0E442',
-      GRN: '#009E73', RUK: '#56B4E9', PC: '#CC79A7', OTH: '#999999',
+      GRN: '#009E73',
+      UKIP: '#000000',   // black — the free Okabe–Ito slot (2015, 2017)
+      BREXIT: '#56B4E9', // sky   (2019)  — Brexit & Reform reuse sky; never in the
+      RUK: '#56B4E9',    // sky   (2024)  — same election, so no on-map collision
+      PC: '#CC79A7',
+      // NI parties reuse GB Okabe–Ito hues: NI is a geographically isolated
+      // cluster, so no NI/GB adjacency — the reuse never causes an on-map clash.
+      DUP: '#D55E00', SF: '#009E73', SDLP: '#E69F00', UUP: '#0072B2', APNI: '#F0E442',
+      OTH: '#999999',
     },
     usa: {
       DEM: '#0072B2', REP: '#D55E00', OTH: '#999999',
@@ -55,7 +67,7 @@ export const partyColors = {
       OTH: '#999999',
     },
     germany: {
-      CDU: '#000000', SPD: '#D55E00', GRN: '#009E73', FDP: '#F0E442',
+      CDU: '#000000', CSU: '#0072B2', SPD: '#D55E00', GRN: '#009E73', FDP: '#F0E442',
       AFD: '#56B4E9', LINKE: '#CC79A7', BSW: '#E69F00', OTH: '#999999',
     },
     philippines: {

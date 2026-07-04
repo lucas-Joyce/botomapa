@@ -7,7 +7,8 @@ export default function MapContainer({ viewMode, mapMode, children }) {
   const gRef = useRef(null)
 
   useEffect(() => {
-    if (!svgRef.current) return
+    const svg = svgRef.current
+    if (!svg) return
 
     const zoom = d3.zoom()
       .scaleExtent([1, 8])
@@ -15,15 +16,15 @@ export default function MapContainer({ viewMode, mapMode, children }) {
         d3.select(gRef.current).attr('transform', event.transform)
       })
 
-    d3.select(svgRef.current).call(zoom)
+    d3.select(svg).call(zoom)
 
     return () => {
-      d3.select(svgRef.current).on('.zoom', null)
+      d3.select(svg).on('.zoom', null)
     }
   }, [])
 
   return (
-    <div className="map-container">
+    <div className="map-container" data-view={viewMode} data-map={mapMode}>
       <svg ref={svgRef} className="map-container__svg">
         <g ref={gRef}>{children}</g>
       </svg>

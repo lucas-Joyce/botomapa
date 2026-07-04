@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { useView } from '../context/view-context'
 import { countryFromPath, countryBySlug } from '../config/countries'
 import { electionsFor } from '../config/elections'
 import '../styles/components/sideNav.scss'
@@ -29,17 +30,21 @@ const formatDate = (iso) => dateFmt.format(new Date(`${iso}T12:00:00`))
 export default function SideNav() {
   const [expanded, setExpanded] = useState(false)
   const { pathname } = useLocation()
+  const { selectedYear, setSelectedYear } = useView()
 
   const country = countryFromPath(pathname)
   const elections = electionsFor(country)
 
-  // Selected election drives the map/data (wired up in Phase 1+). Derived during
-  // render: if the stored id isn't in the current country's list (e.g. after
-  // navigating), fall back to the most recent election.
-  const [selectedId, setSelectedId] = useState(null)
-  const activeId = elections.some(e => e.id === selectedId)
-    ? selectedId
+  // Selected election id is shared via ViewContext so the map/InfoPanel read it.
+  // `activeId` derives the effective selection during render; the effect keeps the
+  // shared value in sync — defaulting to the newest election whenever the current
+  // selection isn't in the active country's list (e.g. after navigating).
+  const activeId = elections.some(e => e.id === selectedYear)
+    ? selectedYear
     : (elections[0]?.id ?? null)
+  useEffect(() => {
+    if (selectedYear !== activeId) setSelectedYear(activeId)
+  }, [activeId, selectedYear, setSelectedYear])
 
   return (
     <aside className={`sidenav${expanded ? ' sidenav--expanded' : ''}`}>
@@ -62,7 +67,7 @@ export default function SideNav() {
                 key={id}
                 type="button"
                 className={`sidenav__election${id === activeId ? ' sidenav__election--active' : ''}`}
-                onClick={() => setSelectedId(id)}
+                onClick={() => setSelectedYear(id)}
                 aria-pressed={id === activeId}
                 title={!expanded ? `${year} · ${type}` : undefined}
               >

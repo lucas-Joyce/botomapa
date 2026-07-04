@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
+import { ViewProvider } from './context/ViewContext'
 import NavBar from './components/NavBar'
 import SideNav from './components/SideNav'
 import Credit from './components/Credit'
@@ -14,6 +15,7 @@ import PhilippinesPage from './pages/PhilippinesPage'
 function App() {
   return (
     <ThemeProvider>
+      <ViewProvider>
       <BrowserRouter>
         <PaletteEmitter />
         <div className="app">
@@ -36,6 +38,7 @@ function App() {
           </div>
         </div>
       </BrowserRouter>
+      </ViewProvider>
     </ThemeProvider>
   )
 }

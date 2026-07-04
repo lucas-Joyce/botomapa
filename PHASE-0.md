@@ -34,10 +34,11 @@ Legend: `[x]` done · `[~]` partially done, needs work · `[ ]` to do
 - [x] `SideNav` reworked: route-aware, lists the active country's elections under **Data** as selectable options (was dead `/data`,`/analytics`… links). Selection derived during render; wires to the map in Phase 1+.
 
 ## 0.4 — The merged data contract (§2.1, adopt now)
-- [ ] Write `client/src/config/dataContract.md` (or a typed sample JSON) — the merged row shape keyed by `constituencyId`.
-- [ ] Include result fields now; leave **socioeconomic fields present but null** (Phase 7 fills them).
-- [ ] Add `boundariesComparable: boolean` to the row model (§3.1, future-proofs swing).
-- [ ] Rule, documented: **every** map component consumes this one array; the later hex↔choropleth merge is then mechanical.
+- [x] `client/src/config/dataContract.md` — merged row shape keyed by `constituencyId` (GSS code), field-by-field sourced to the real INGE columns (`ons_id`/`PCON17CD`, wide constituency + long candidate CSVs), with a real Aberavon GE2019 example.
+- [x] Result fields defined; `socio: null` now (Phase 7 fills without a schema change).
+- [x] `boundariesComparable: boolean` on every row — flags the 2024 new-boundary/new-GSS-code break (§3.1).
+- [x] Documented rule: cleaning scripts emit an array → `server/data/processed/<electionId>.json`; every view consumes the one array via a `Map` lookup (§3.3); **assert seat count + log unmatched ids** (§3.5).
+- [x] `client/src/config/parties.js` — party registry (code → name) + `normalizeParty()` collapsing raw labels (Con/Conservative, ukip→brexit→reform ⇒ `RUK`, minors ⇒ `OTH`). Codes verified aligned with `colorMaps.js`.
 
 ## 0.5 — Router shell: trim to UK
 - [x] `BrowserRouter` + routes for all 6 pages wired in `App.jsx`.

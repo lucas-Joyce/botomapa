@@ -1,4 +1,4 @@
-import { useView } from '../context/ViewContext'
+import { useView } from '../context/view-context'
 import MapContainer from '../components/MapContainer'
 import InfoPanel from '../components/InfoPanel'
 import '../styles/pages/countryPage.scss'

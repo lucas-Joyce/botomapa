@@ -44,6 +44,17 @@
       color: var(--color-text);
       border-bottom-color: var(--color-text);
     }
+
+    // Stub country: dimmed, non-interactive, no hover affordance.
+    &--soon {
+      opacity: 0.45;
+      cursor: not-allowed;
+
+      &:hover {
+        color: var(--color-muted);
+        background: transparent;
+      }
+    }
   }
 
   &__actions {

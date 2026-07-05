@@ -27,10 +27,20 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
 // Parse as local noon so the formatted day never slips across a timezone boundary.
 const formatDate = (iso) => dateFmt.format(new Date(`${iso}T12:00:00`))
 
+// The map renderings a country page can switch between. All four are listed now
+// so the switch is visible in Phase 0; the renderers themselves land Phase 1+
+// (choropleth first). `id` is what flows to MapContainer via `mapMode`.
+const MAP_MODES = [
+  { id: 'choropleth', short: 'CHO', label: 'Choropleth'    },
+  { id: 'hex',        short: 'HEX', label: 'Hex cartogram'  },
+  { id: 'dorling',    short: 'DOR', label: 'Dorling'        },
+  { id: 'waffle',     short: 'WAF', label: 'Waffle'         },
+]
+
 export default function SideNav() {
   const [expanded, setExpanded] = useState(false)
   const { pathname } = useLocation()
-  const { selectedYear, setSelectedYear } = useView()
+  const { selectedYear, setSelectedYear, mapMode, setMapMode } = useView()
 
   const country = countryFromPath(pathname)
   const elections = electionsFor(country)
@@ -76,6 +86,21 @@ export default function SideNav() {
                   <span className="sidenav__election-type">{type}</span>
                   <span className="sidenav__election-date">{formatDate(date)}</span>
                 </span>
+              </button>
+            ))}
+
+            <div className="sidenav__section-label">Map</div>
+            {MAP_MODES.map(({ id, short, label }) => (
+              <button
+                key={id}
+                type="button"
+                className={`sidenav__mode${id === mapMode ? ' sidenav__mode--active' : ''}`}
+                onClick={() => setMapMode(id)}
+                aria-pressed={id === mapMode}
+                title={!expanded ? label : undefined}
+              >
+                <span className="sidenav__mode-key">{short}</span>
+                <span className="sidenav__mode-label">{label}</span>
               </button>
             ))}
           </>

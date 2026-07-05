@@ -2,9 +2,11 @@ import { useState } from 'react'
 import '../styles/components/credit.scss'
 
 const credits = [
-  { name: 'Jane Smith',   role: 'Original design',     link: 'github.com/janesmith' },
-  { name: 'Acme UI Kit',  role: 'Component library',   link: 'acme.design'           },
-  { name: 'Open Icons',   role: 'Icon set — MIT',       link: 'openicons.dev'         },
+  { name: 'D3.js',                        role: 'Maps & cartograms',            link: 'd3js.org'                     },
+  { name: 'React + Vite',                 role: 'App framework & build',        link: 'react.dev'                    },
+  { name: 'Okabe–Ito',                    role: 'Colourblind-safe palette',     link: 'jfly.uni-koeln.de/color'      },
+  { name: 'House of Commons Library',     role: 'UK election data',             link: 'commonslibrary.parliament.uk' },
+  { name: 'Office for National Statistics', role: 'Constituency boundaries — OGL v3', link: 'ons.gov.uk'             },
 ]
 
 function ChevronIcon({ open }) {

@@ -19,6 +19,19 @@
     justify-content: center;
     gap: 20px;
   }
+
+  // Stub country on the landing list: dimmed and non-interactive until Phase 5+.
+  &__link--soon {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &__soon-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+  }
 }
 
 // Effect 2 — exact CSS from vault (css-card-hover-effects.md)

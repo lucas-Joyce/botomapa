@@ -1,3 +1,5 @@
+@~/.config/opencode/AGENTS.md
+
 # AGENTS.md — BotoMapa
 
 ## What this is

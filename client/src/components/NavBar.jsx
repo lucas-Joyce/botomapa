@@ -47,16 +47,23 @@ export default function NavBar() {
       <NavLink to="/" className="navbar__logo">LJ</NavLink>
 
       <ul className="navbar__countries">
-        {countries.map(({ name, slug }) => (
+        {countries.map(({ name, slug, active }) => (
           <li key={slug}>
-            <NavLink
-              to={`/${slug}`}
-              className={({ isActive }) =>
-                `navbar__link${isActive ? ' navbar__link--active' : ''}`
-              }
-            >
-              {name}
-            </NavLink>
+            {active ? (
+              <NavLink
+                to={`/${slug}`}
+                className={({ isActive }) =>
+                  `navbar__link${isActive ? ' navbar__link--active' : ''}`
+                }
+              >
+                {name}
+              </NavLink>
+            ) : (
+              // Stub country — not yet navigable. Shown but disabled until Phase 5+.
+              <span className="navbar__link navbar__link--soon" aria-disabled="true" title="Coming soon">
+                {name}
+              </span>
+            )}
           </li>
         ))}
       </ul>

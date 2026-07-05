@@ -7,9 +7,16 @@ const LandingPage = () => {
     <div className="landing">
       <h1 className="landing__title">BotoMapa</h1>
       <ul className="landing__list">
-        {countries.map(({ name, slug }) => (
+        {countries.map(({ name, slug, active }) => (
           <li key={slug} className="landing__item">
-            <Link to={`/${slug}`} className="landing__link">{name}</Link>
+            {active ? (
+              <Link to={`/${slug}`} className="landing__link">{name}</Link>
+            ) : (
+              // Stub country — not yet navigable. Shown but disabled until Phase 5+.
+              <span className="landing__link landing__link--soon" aria-disabled="true">
+                {name} <span className="landing__soon-tag">soon</span>
+              </span>
+            )}
           </li>
         ))}
       </ul>

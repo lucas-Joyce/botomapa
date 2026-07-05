@@ -42,14 +42,14 @@ Legend: `[x]` done · `[~]` partially done, needs work · `[ ]` to do
 
 ## 0.5 — Router shell: trim to UK
 - [x] `BrowserRouter` + routes for all 6 pages wired in `App.jsx`.
-- [ ] Keep `/` + `/uk` as the **active** targets for now; leave the other 4 stubs but don't invest in them.
-- [ ] Fix `SideNav` — its links (`/data`, `/analytics`, `/map`, `/overview`) are **dead routes**. Repurpose to real per-country view switches (choropleth / hex / waffle) or hide until Phase 2.
-- [ ] Replace placeholder `Credit` data (Jane Smith / Acme UI Kit) with real attributions, or defer with a `TODO`.
+- [x] Keep `/` + `/uk` as the **active** targets for now; the other 4 stay as stubs (routes still wired) but are surfaced as disabled "coming soon" in NavBar + LandingPage via an `active` flag on `countries.js`.
+- [x] Fix `SideNav` — added a **Map** section: per-country view switches (Choropleth / Hex / Dorling / Waffle) wired to `mapMode`, alongside the existing **Data** year picker. All four visible even collapsed (mono short-code token). No dead routes remain.
+- [x] Replace placeholder `Credit` data (Jane Smith / Acme UI Kit) with real attributions — real deps (D3, React+Vite), Okabe–Ito palette, and UK data sources (House of Commons Library, ONS / OGL v3).
 
 ## 0.6 — Guardrails baked in before any D3 (cheap now, painful later)
-- [ ] `useElectionData(country)` hook stub that returns a **`Map`-based lookup** (`new Map(rows.map(d => [d.constituencyId, d]))`) — no component ever calls `.find()` in a loop (§3.3).
-- [ ] Document the **StrictMode D3 rules** in a short `client/src/viz/README.md`: React owns `<svg>`, D3 owns children, render via `.join()` only, effects return cleanup (§3.4).
-- [ ] Install viz deps when Phase 1 starts, **not** react-simple-maps: `d3-geo`, `d3-scale`, `d3-scale-chromatic`, `topojson-client` (§2.3). (Nivo added later, waffle only.)
+- [x] `useElectionData(country)` hook stub (`client/src/hooks/useElectionData.js`) returns a **`Map`-based lookup** (`new Map(rows.map(d => [d.constituencyId, d]))`, memoised) — no component ever calls `.find()` in a loop (§3.3). Fetch stubbed to `[]` until Phase 1.
+- [x] Documented the **StrictMode D3 rules** in `client/src/viz/README.md`: React owns `<svg>`, D3 owns children, render via `.join()` only, effects return cleanup (§3.4).
+- [~] Viz deps: `d3` (v7 meta-package — bundles `d3-geo`/`d3-scale`/`d3-scale-chromatic`) + `topojson-client` already in `client/package.json`; `react-simple-maps` correctly absent. Nivo (waffle only) deferred to its phase. No install needed now.
 
 ---
 

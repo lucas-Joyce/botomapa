@@ -29,9 +29,10 @@ app.get('/api/:country/:electionId', async (req, res) => {
   if (!COUNTRIES.has(country)) {
     return res.status(404).json({ error: `Unknown country '${country}'` })
   }
-  // Must be '<country>-<year>': pins the route to the file naming AND blocks path
-  // traversal (no '/', '..', or stray chars can reach readFile).
-  if (!/^[a-z]+-\d{4}$/.test(electionId) || !electionId.startsWith(`${country}-`)) {
+  // Must be '<country>-<year>' with an optional variant suffix (e.g. '-notional'):
+  // pins the route to the file naming AND blocks path traversal (no '/', '..', or
+  // stray chars can reach readFile).
+  if (!/^[a-z]+-\d{4}(-[a-z]+)?$/.test(electionId) || !electionId.startsWith(`${country}-`)) {
     return res.status(404).json({ error: `Invalid election id '${electionId}' for '${country}'` })
   }
 

@@ -20,7 +20,7 @@ Legend: `[x]` done · `[~]` partially done, needs work · `[ ]` to do
 ## 1.1 — Acquire the real UK inputs (data-first — highest risk, §3.1/§3.5)
 - [x] Confirm the on-disk baseline: INGE `data/csvData/csvUK/GE20{15,17,19}-{constituency,candidate}.csv` + `data/mapData/uk.json` (2017 boundaries). These are the *proving* inputs — read-only, copy into `server/data/raw/` (never write back to INGE).
 - [x] Acquire **GE2024** results — House of Commons Library, briefing **CBP-10009**: constituency (650) + candidate (4,515 cand / 650 seats) CSVs in place, both **ID-matched 650/650** vs boundaries+hex. 2024 boundaries, `PCON24CD`.
-- [ ] Acquire **notional 2019** (2019 votes re-estimated onto 2024 boundaries) — **correction:** *not* in CBP-10009; it's a separate Rallings & Thrasher dataset (Elections Centre / electionresults.parliament.uk). The `HoC-GE2019-*` files downloaded are **actual** 2019 (2017 boundaries, 5/650 vs 2024), not notional. This is the *only* valid swing baseline for 2024 (§3.1); actual-2019 retained alongside for comparison.
+- [x] Acquire **notional 2019** (2019 votes re-estimated onto 2024 boundaries) — **correction:** *not* in CBP-10009; it's a separate Rallings & Thrasher dataset (electionresults.parliament.uk long-only export). The `HoC-GE2019-*` files are **actual** 2019 (2017 boundaries), not notional. Acquired as `candidate-level-results-notional-general-election-12-12-2019.csv` and **processed to `uk-2019-notional.json`** (650/650 on 2024 boundaries, `boundariesComparable: true`) — the swing baseline for 2024 (§3.1); actual-2019 retained alongside for comparison.
 - [x] Acquire the **2024 constituency boundaries** — ONS Open Geography Portal, *"Westminster Parliamentary Constituencies (July 2024) Boundaries UK"* (**BGC** = generalised/clipped is right for web maps; download GeoJSON → convert to TopoJSON) + the **HexJSON** (Open Innovations, updated 650). Phase 2 renders them; Phase 1 only **verifies IDs match** the 2024 results before any join code is written. _(Both acquired: `raw/geojson/PCON_JUL_2024_BGC.geojson` + `raw/hexjson/uk-constituencies-2024.hexjson`; **650/650 `PCON24CD` match** across boundaries, hex, and the 2024 results CSV. GeoJSON→TopoJSON conversion deferred to Phase 2.)_
 - [~] Store raw acquisitions under `server/data/raw/` (git-tracked or documented source + checksum); processed output stays `server/data/processed/`. _(New `raw/{geojson,topojson,hexjson}/` subfolders; sources + sha256 documented in `raw/README.md`. `uk.json` relocated to `raw/topojson/`.)_
 
@@ -39,7 +39,7 @@ Legend: `[x]` done · `[~]` partially done, needs work · `[ ]` to do
 - [x] New `server/scripts/` dir + `clean-uk.js`. Honours the **cleaning-script contract** in `dataContract.md` §"Cleaning-script contract":
   - [x] Read the **wide** constituency CSV (totals, `first_party`/`second_party`, `electorate`, `valid_votes`, `majority`) + the **long** candidate CSV (one row per candidate → `results[]`), join on `ons_id`. Two header dialects (`ons` old snake_case for 2015/2017; `hoc` HoC Title-Case for 2019/2024), one core.
   - [x] `normalizeParty('uk', raw)` every label; **sum collisions** (e.g. Lab + Lab Co-op; every minor/independent → summed `OTH`). Rebrands stay distinct — `UKIP`/`BREXIT`/`RUK` (added `brx`/`ruk` aliases to `parties.js`; verified RUK in 2024, BREXIT in 2019, UKIP in 2015/17).
-  - [x] Derive `turnout`, `majorityShare`, per-party `share` (source is 0–1); sort `results` votes-desc; set `boundariesComparable` (2024 = true; actual 2015/2017/2019 = 2017-boundary set = false). Notional-2019 deferred to Phase 3 (store-only).
+  - [x] Derive `turnout`, `majorityShare`, per-party `share` (source is 0–1); sort `results` votes-desc; set `boundariesComparable` (2024 & notional-2019 = true; actual 2015/2017/2019 = 2017-boundary set = false). Notional-2019 also processed now (long-only layout → `uk-2019-notional.json`, winner/runner-up from `result position`).
   - [x] Emit the array to `processed/<electionId>.json` **and** an `idMap` (`<electionId>.idMap.json`, identity for UK since `ons_id` IS the GSS `constituencyId`).
   - [x] **Assert `rows.length === 650`** (before any write); **log unmatched ids on both sides**; **fail loudly** (`process.exitCode = 1`) rather than write a partial file.
 - [x] Idempotent + prints a summary line (seats, parties seen, OTH count, unmatched) — DoD §1. Verified: uk-2019 Aberavon row is a byte-for-byte match to the `dataContract.md` example.
@@ -51,14 +51,14 @@ Legend: `[x]` done · `[~]` partially done, needs work · `[ ]` to do
 - [x] **Decision: hand-roll**, no dependency (per "a few own lines beat a package"). One `parseCsv()` handles the union of what the files actually contain — quotes-protect-commas (all files), `""`→`"` unescape (notional, 11,473×), CRLF/LF; **no** multi-line-field case exists in any file. Lives in `server/scripts/` and is exercised by a round-trip check on the old 650-row files. Implemented as part of 1.3.
 
 ## 1.5 — Wire `useElectionData` to real data (§3.3)
-- [~] Hook exists as a Phase-0 stub (`client/src/hooks/useElectionData.js`) returning an empty `Map`. Phase 1 replaces the stub body with a real fetch.
-- [ ] Fetch the selected `electionId` (1.2), `setRows(json)`; keep the **`Map` keyed by `constituencyId`** as the one lookup (never `.find()` in a loop).
-- [ ] Follow the StrictMode rules already documented in `client/src/viz/README.md` (cleanup on unmount, no double-fetch flash); add loading/error state.
-- [ ] **Assert on the client too:** log if `byId.size !== 650` for a UK election — cheap early warning that a file is stale/partial.
+- [x] Hook rewritten from the Phase-0 stub — real fetch, signature now `useElectionData(country, electionId)` (mirrors the `/api/:country/:electionId` route).
+- [x] Fetches the selected `electionId`; keeps the **`Map` keyed by `constituencyId`** as the one lookup (never `.find()`). Single state object set only in async callbacks; `status` derived (lint-clean under `react-hooks/set-state-in-effect`).
+- [x] StrictMode-safe (`AbortController` + `ignore` flag in cleanup; never flashes the previous election's rows while a new one loads). Exposes `status` (`idle`/`loading`/`ready`/`error`) + `error`.
+- [x] Client assert: logs if `byId.size !== 650` for a UK election. _(Coded + lint-clean; runtime proof in 1.6.)_
 
 ## 1.6 — Prove the thread (no map yet)
-- [~] Server `/api/:country` route exists (Phase 0); extend per 1.2 and confirm it serves the real file through the Vite proxy.
-- [ ] Minimal proof the data flows: surface `byId.size` (seat count) + selected `electionId` in the existing `InfoPanel` (or a console assert) on `/uk`. No choropleth/hex — that's Phase 2.
+- [x] Route extended per 1.2 and **confirmed serving the real file through the Vite proxy**: `GET localhost:5173/api/uk/uk-2024` → 650 rows.
+- [x] Data flow surfaced in `InfoPanel` on `/uk`: selected `electionId`, `status`, `byId.size` (**650 / 650**), and a seats-won tally (LAB 411, CON 121, LD 72, … — the real 2024 result), derived from the one `Map`. No choropleth/hex — that's Phase 2. Client build + lint clean.
 
 ---
 

@@ -55,16 +55,19 @@ The two `HoC-GE2019-*` files hold the **same numbers** as the older
 `GE2019-*.csv` (verified identical for Aberavon) — the value is that they share the
 2024 files' schema, so `clean-uk.js` can parse 2019 + 2024 on one code path.
 
-## STILL NEEDED — notional 2019 (a *different* dataset, not in CBP-10009)
+## Notional 2019 — acquired & processed
 
-Notional 2019 = 2019 votes **re-estimated onto the 2024 boundaries** (would match
-650/650 `PCON24CD`; seats like "Aberafan Maesteg"). It is the swing baseline for
-2024 (§3.1) and is **not** published in the GE2024 results briefing — it's produced
-separately by **Rallings & Thrasher**. Sources (download in a browser):
+Notional 2019 = 2019 votes **re-estimated onto the 2024 boundaries** (the swing
+baseline for 2024, §3.1). **Not** in CBP-10009 — a separate Rallings & Thrasher
+dataset, taken here as the electionresults.parliament.uk long-only export:
 
-- Elections Centre (Rallings & Thrasher, the producers): https://www.electionscentre.co.uk/
-- UK Parliament election results portal (hosts 2019-on-2024-boundaries): https://electionresults.parliament.uk/
-- Reference table (for spot-checking): https://en.wikipedia.org/wiki/Notional_results_of_the_2019_United_Kingdom_general_election_by_2024_constituency
+- `candidate-level-results-notional-general-election-12-12-2019.csv` — 650 seats,
+  every row `General election is notional = true`, **650/650 on `PCON24CD`**.
+- Long-only (no wide file): `clean-uk.js` groups by constituency, takes winner /
+  runner-up from `Candidate result position`, → `processed/uk-2019-notional.json`
+  (`boundariesComparable: true`). Served at `/api/uk/uk-2019-notional` but **not**
+  listed in `elections.js` (it's a baseline, not a user-selectable election).
 
-Save as `GE2019-notional-constituency.csv` (+ `-candidate.csv` if published).
-Once in, it must cross-check **650/650 vs `PCON24CD`** before any join code (§1.1 gate).
+Sources: https://electionresults.parliament.uk/ ·
+https://www.electionscentre.co.uk/ ·
+reference table https://en.wikipedia.org/wiki/Notional_results_of_the_2019_United_Kingdom_general_election_by_2024_constituency

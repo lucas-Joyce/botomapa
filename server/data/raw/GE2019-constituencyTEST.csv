@@ -1,0 +1,6 @@
+ons_id,ons_region_id,constituency_name,county_name,region_name,country_name,constituency_type,declaration_time,mp_firstname,mp_surname,mp_gender,result,first_party,second_party,electorate,valid_votes,invalid_votes,majority,con,lab,ld,brexit,green,snp,pc,dup,sf,sdlp,uup,alliance,other,other_winner
+W07000049,W92000004,Aberavon,West Glamorgan,Wales,Wales,County,13/12/2019 02:30,Stephen,Kinnock,Male,Lab hold,Lab,Con,50750,31598,82,10490,6518,17008,1072,3108,450,0,2711,0,0,0,0,0,731,0
+W07000058,W92000004,Aberconwy,Clwyd,Wales,Wales,County,13/12/2019 03:09,Robin,Millar,Male,Con hold,Con,Lab,44699,31865,123,2034,14687,12653,1821,0,0,0,2704,0,0,0,0,0,0,0
+S14000001,S92000003,Aberdeen North,Scotland,Scotland,Scotland,Borough,13/12/2019 03:13,Kirsty,Blackman,Female,SNP hold,SNP,Con,62489,37413,72,12670,7535,4939,2846,1008,880,20205,0,0,0,0,0,0,0,0
+S14000002,S92000003,Aberdeen South,Scotland,Scotland,Scotland,Borough,13/12/2019 03:34,Stephen,Flynn,Male,SNP gain from Con,SNP,Con,65719,45638,131,3990,16398,3834,5018,0,0,20388,0,0,0,0,0,0,0,0
+S14000003,S92000003,Airdrie and Shotts,Scotland,Scotland,Scotland,County,13/12/2019 02:59,Neil,Gray,Male,SNP hold,SNP,Lab,64011,39772,91,5201,7011,12728,1419,0,685,17929,0,0,0,0,0,0,0,0

@@ -18,7 +18,7 @@ Legend: `[x]` done · `[~]` partially done, needs work · `[ ]` to do
 ---
 
 ## 1.1 — Acquire the real UK inputs (data-first — highest risk, §3.1/§3.5)
-- [ ] Confirm the on-disk baseline: INGE `data/csvData/csvUK/GE20{15,17,19}-{constituency,candidate}.csv` + `data/mapData/uk.json` (2017 boundaries). These are the *proving* inputs — read-only, copy into `server/data/raw/` (never write back to INGE).
+- [x] Confirm the on-disk baseline: INGE `data/csvData/csvUK/GE20{15,17,19}-{constituency,candidate}.csv` + `data/mapData/uk.json` (2017 boundaries). These are the *proving* inputs — read-only, copy into `server/data/raw/` (never write back to INGE).
 - [ ] Acquire **GE2024** results — House of Commons Library, briefing **CBP-10009**: download *"Detailed results by constituency (csv)"* (~113 KB) + *"Detailed results by candidate (csv)"* (~660 KB). 2024 boundaries, `PCON24CD`.
 - [ ] Acquire **notional 2019** (2019 votes re-estimated onto 2024 boundaries) — published in the **same CBP-10009** briefing. This is the *only* valid swing baseline for 2024 (§3.1); actual-2019 is on old boundaries.
 - [ ] Acquire the **2024 constituency boundaries** — ONS Open Geography Portal, *"Westminster Parliamentary Constituencies (July 2024) Boundaries UK"* (**BGC** = generalised/clipped is right for web maps; download GeoJSON → convert to TopoJSON) + the **HexJSON** (Open Innovations, updated 650). Phase 2 renders them; Phase 1 only **verifies IDs match** the 2024 results before any join code is written.

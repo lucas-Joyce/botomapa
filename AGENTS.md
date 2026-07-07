@@ -29,3 +29,12 @@ voting data. Portfolio piece — code quality is the showcase.
 - Theme is localStorage-backed — don't break the theme context contract.
 - Country pages share structure — a change to one's pattern likely applies
   to all. Keep them consistent.
+
+## Task completion
+- Any task with 2+ steps: create a todo list before starting.
+- After finishing AND verifying each item, immediately call todowrite to
+  mark it `completed`. Do not batch completion to the end.
+- Keep working through all pending items without waiting for confirmation.
+  Stop only when every item is `completed`, or genuinely blocked — then keep
+  it `in_progress` and add a follow-up todo naming the blocker.
+- When the whole task is done, tick the matching checkbox in ROADMAP.md to [x].

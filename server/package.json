@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "clean:uk": "node scripts/clean-uk.js"
   },
   "dependencies": {
     "express": "^5.1.0"

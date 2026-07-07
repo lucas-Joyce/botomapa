@@ -3,7 +3,7 @@
 The one row shape every map component consumes (build-plan-v2 §2.1). Cleaning
 scripts (Phase 1+) output an **array of these rows** to
 `server/data/processed/<electionId>.json` (e.g. `uk-2019.json`); the server serves
-it at `/api/:country` and `useElectionData` builds a `Map` keyed by
+it at `/api/:country/:electionId` and `useElectionData` builds a `Map` keyed by
 `constituencyId` (never `.find()` in a render loop — §3.3).
 
 Grounded in the real data in the read-only `second-milestone-INGE` prototype

@@ -18,22 +18,30 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', service: 'botomapa-server', time: new Date().toISOString() })
 })
 
-// GET /api/:country -> server/data/processed/:country.json
-// Thin static-JSON server: no DB. The cleaning scripts (Phase 1+) write the files.
-app.get('/api/:country', async (req, res) => {
+// GET /api/:country/:electionId -> server/data/processed/<electionId>.json
+// Election-keyed, thin static-JSON server: no DB. The id (e.g. 'uk-2024') is the
+// filename AND the client's ViewContext.selectedYear — one stable key, no implicit
+// "newest" that drifts. clean-uk.js writes the file; this streams it verbatim.
+app.get('/api/:country/:electionId', async (req, res) => {
   const country = req.params.country.toLowerCase()
+  const electionId = req.params.electionId.toLowerCase()
 
   if (!COUNTRIES.has(country)) {
     return res.status(404).json({ error: `Unknown country '${country}'` })
   }
+  // Must be '<country>-<year>': pins the route to the file naming AND blocks path
+  // traversal (no '/', '..', or stray chars can reach readFile).
+  if (!/^[a-z]+-\d{4}$/.test(electionId) || !electionId.startsWith(`${country}-`)) {
+    return res.status(404).json({ error: `Invalid election id '${electionId}' for '${country}'` })
+  }
 
   try {
-    const raw = await readFile(join(PROCESSED_DIR, `${country}.json`), 'utf-8')
+    const raw = await readFile(join(PROCESSED_DIR, `${electionId}.json`), 'utf-8')
     res.type('application/json').send(raw)
   } catch (err) {
     if (err.code === 'ENOENT') {
       return res.status(404).json({
-        error: `No processed data yet for '${country}'. Run the Phase 1 cleaning script.`,
+        error: `No processed data yet for '${electionId}'. Run the Phase 1 cleaning script.`,
       })
     }
     console.error(err)

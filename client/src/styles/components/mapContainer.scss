@@ -13,5 +13,20 @@
     &:active {
       cursor: grabbing;
     }
+
+    // Interactive map shapes: a pointer (not the pan hand) + a hover/focus outline
+    // so the constituency under the cursor/keyboard is obvious. Dragging the SVG
+    // still pans (d3-zoom on the svg) — this only overrides the per-shape cursor.
+    .viz-choropleth path,
+    .viz-hex polygon {
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        stroke: var(--color-text);
+        stroke-width: 1.2;
+        outline: none;
+      }
+    }
   }
 }

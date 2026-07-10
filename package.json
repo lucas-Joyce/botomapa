@@ -7,9 +7,11 @@
     "dev": "concurrently -n client,server -c blue,green \"npm --prefix client run dev\" \"npm --prefix server run dev\"",
     "dev:client": "npm --prefix client run dev",
     "dev:server": "npm --prefix server run dev",
-    "install:all": "npm install && npm --prefix client install && npm --prefix server install"
+    "install:all": "npm install && npm --prefix client install && npm --prefix server install",
+    "geo:uk": "mapshaper server/data/raw/geojson/PCON_JUL_2024_BGC.geojson -simplify 8% keep-shapes -clean -filter-fields PCON24CD,PCON24NM -rename-layers uk2024 -o format=topojson quantization=1e5 client/public/geometry/uk-2024.topojson && cp server/data/raw/topojson/uk.json client/public/geometry/uk-2017.topojson && cp server/data/raw/hexjson/uk-constituencies-2024.hexjson client/public/geometry/uk-2024.hexjson"
   },
   "devDependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "mapshaper": "^0.7.39"
   }
 }
